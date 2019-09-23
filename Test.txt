@@ -1,1 +1,61 @@
-time is gone
+package chat2;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Scanner;
+
+public class SocketClient {
+	
+	Socket socket = null;
+	PrintWriter writer = null;
+	BufferedReader reader = null;
+	
+	public SocketClient() {
+		try {
+			//서버쪽 accept()호출하기 //127.0.0.1 / 사설IP / localhost 
+			socket = new Socket("localhost", 10000);
+			
+			//내가 메시지를 보낼 것이니까 output
+			writer = new PrintWriter(socket.getOutputStream());
+		    reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			
+		    Thread t1 = new Thread(new ReaderThread());
+		    t1.start();
+		    
+			//사용자로 부터 입력받기.
+			Scanner sc = new Scanner(System.in);
+			
+			//메인쓰레드 역할 - 쓰는 역할
+			while(true) {
+				String line = sc.nextLine();
+				writer.println(line);
+				writer.flush(); // 버퍼를 비우는 역할
+			}
+			
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	class ReaderThread implements Runnable {
+		@Override
+		public void run() {
+			String line = null;
+			try {
+				while((line = reader.readLine()) != null) {
+					System.out.println("서버로부터온 메시지 : "+line);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static void main(String[] args) {
+		new SocketClient();
+	}
+}
