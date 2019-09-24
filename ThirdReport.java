@@ -40,7 +40,7 @@ implements ActionListener{
 		setVisible(true);
 
 	 }
-
+// 집에 가서 아무 wav파일 받아서 실행시켜보기
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		 if(e.getActionCommand().equals("음악재생버튼")){  
