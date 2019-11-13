@@ -10,15 +10,25 @@ import javax.servlet.http.HttpServletResponse;
 import com.cos.action.Action;
 import com.cos.action.user.UserFactory;
 
+/**
+ * Servlet implementation class UserController
+ */
 @WebServlet("/user")
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public UserController() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
-	public UserController() {
-		super();
-	}
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");//url을 UTF-8로 인코딩한다는 뜻
 		String cmd = request.getParameter("cmd");//url에 있는 cmd가 파라미터임
 		if (cmd == null || cmd.equals("")) {

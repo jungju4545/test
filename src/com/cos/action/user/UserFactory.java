@@ -5,7 +5,6 @@ import com.cos.action.Action;
 public class UserFactory {
 	public static Action getAction(String cmd) {
 		if(cmd.equals("join")) {
-			
 			 return new UserJoinAction();
 		}
 		if(cmd.equals("login")) {
@@ -17,7 +16,9 @@ public class UserFactory {
 		if(cmd.equals("update")) {
 			return new UserUpdateAction();
 		}
-		
+		if(cmd.equals("userProfile")) {
+			return new UserProfileAction();
+		}
 		
 		return null;
 	}

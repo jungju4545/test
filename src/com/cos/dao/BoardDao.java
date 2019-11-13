@@ -1,5 +1,6 @@
 package com.cos.dao;
 
+import java.io.BufferedReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -184,6 +185,7 @@ public class BoardDao {
 				board.setReadCount(rs.getInt("b.readCount"));
 				board.setCreateDate(rs.getTimestamp("b.createDate"));
 				board.getUser().setUsername(rs.getString("u.username"));
+				board.getUser().setUserProfile(rs.getString("u.userProfile"));
 				boards.add(board);
 			}
 			return boards;
@@ -196,6 +198,49 @@ public class BoardDao {
 		return null;
 	}
 
+	
+	public List<Board> findAll(int page, String search) {
+		
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append("select * ");
+		sb.append("from board b, user u ");
+		sb.append("where b.userId = u.id and ");
+		sb.append("(b.content like ? or b.title like ?) ");
+		sb.append("order by b.id desc limit ?, 3 ");
+		
+		final String SQL = sb.toString();
+		conn = DBConn.getConnection();                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+		
+		try {
+			List<Board> boards = new ArrayList<>();
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, "%"+search+"%");
+			pstmt.setString(2, "%"+search+"%");
+			pstmt.setInt(3, (page-1)*3);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Board board = new Board();
+				board.setId(rs.getInt("b.id"));
+				board.setUserId(rs.getInt("b.userId"));
+				board.setTitle(rs.getString("b.title"));
+				board.setContent(rs.getString("b.content")+" ");
+				board.setReadCount(rs.getInt("b.readCount"));
+				board.setCreateDate(rs.getTimestamp("b.createDate"));
+				board.getUser().setUsername(rs.getString("u.username"));
+				board.getUser().setUserProfile(rs.getString("u.userProfile"));
+				boards.add(board);
+			}
+			return boards;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBClose.close(conn, pstmt, rs);
+		}
+		return null;
+	}
+	
 	// 상세보기 SELECT*FROM board WHERE id
 	public Board findById(int id) {
 		final String SQL = "SELECT*FROM board b, user u  WHERE b.userId = u.id and b.id=?";
@@ -214,6 +259,7 @@ public class BoardDao {
 				board.setReadCount(rs.getInt("b.readCount"));
 				board.setCreateDate(rs.getTimestamp("b.createDate"));
 				board.getUser().setUsername(rs.getString("u.username"));
+				board.getUser().setUserProfile(rs.getString("u.userProfile"));
 				return board;
 			}
 		} catch (Exception e) {

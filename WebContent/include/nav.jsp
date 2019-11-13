@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
-<html lang="en">
+<html>
 <head>
 <!-- Required meta tags -->
 <meta charset="utf-8">
@@ -34,39 +34,35 @@
 						aria-label="Toggle navigation">
 						<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 					</button>
-
+					
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 						<ul class="nav navbar-nav menu_nav">
 							<li class="nav-item active"><a class="nav-link" href="/blog/index.jsp">Home</a></li>
 							<li class="nav-item"><a class="nav-link" href="/blog/board/write.jsp">Posting</a></li>
-							
-							
+
 							<c:choose>
-							<c:when test="${empty sessionScope.user}">
-							<!--sessionScope.user가 빈값이다. user오브젝트가 안만들어진거-->
-							<li class="nav-item"><a class="nav-link" href="/blog/user/join.jsp">Join</a></li>
-							<li class="nav-item"><a class="nav-link" href="/blog/user/login.jsp">Login</a></li>
-							</c:when>
-							
-							<c:otherwise>
-							<li class="nav-item"><a class="nav-link" href="/blog/user/update.jsp">Profile</a></li>
-							<!-- 바로 jsp로 가면 안되서 서블릿을 타야한다 -->
-							<li class="nav-item"><a class="nav-link" href="/blog/user?cmd=logout">Logout</a></li>
-							
-							</c:otherwise>
+								<c:when test="${empty sessionScope.user}">
+									<li class="nav-item"><a class="nav-link" href="/blog/user/join.jsp">Join</a></li>
+									<li class="nav-item"><a class="nav-link" href="/blog/user/login.jsp">Login</a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="nav-item"><a class="nav-link" href="/blog/user/update.jsp">Profile</a></li>
+									<li class="nav-item"><a class="nav-link" href="/blog/user?cmd=logout">Logout</a></li>
+								</c:otherwise>
 							</c:choose>
 							
 						</ul>
-						<ul class="nav navbar-nav navbar-right header_social ml-auto">
-							<li class="nav-item"><a href="#"><i class="fa fa-facebook"></i></a></li>
-							<li class="nav-item"><a href="#"><i class="fa fa-twitter"></i></a></li>
-							<li class="nav-item"><a href="#"><i class="fa fa-dribbble"></i></a></li>
-							<li class="nav-item"><a href="#"><i class="fa fa-behance"></i></a></li>
+						<!-- nav의 social login 부분 -->
+						<ul class="nav navbar-nav navbar-right ml-auto">
+							<c:if test="${!empty sessionScope.user}">
+								<li class="nav-item"><a href="/blog/user/userProfileForm.jsp"><img style="border-radius:20px" src="${sessionScope.user.userProfile}" width="40px" height="40px" /></a></li>
+							</c:if>
 						</ul>
 					</div>
 				</div>
 			</nav>
 		</div>
+
 	</header>
 	<!--================Header Menu Area =================-->

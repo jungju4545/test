@@ -23,27 +23,31 @@ public class BoardListAction implements Action{
 public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	if(request.getParameter("page")==null) return;
 	int page = Integer.parseInt(request.getParameter("page"));
-	// page <= 0 or page>maxNum 버튼 비활성화
+	
 	if(page<=0 ) {
 		page=1;
 	}
 	
 	BoardDao bDao = new BoardDao();
-	
-	
-	List<Board> boards = bDao.findAll(page);// 페이징하기
+	List<Board> boards = null;
 	List<Board> hotBoards = bDao.findOrderByReadCountDesc();// 인기리스트
+	
+	//search 와 목록을 분기
+	if(request.getParameter("search")==null || request.getParameter("search").equals("")){
+		boards = bDao.findAll(page);
+		request.setAttribute("search", null);
+		
+	}else {
+		String search = request.getParameter("search");
+		boards = bDao.findAll(page, search);
+		request.setAttribute("search", search);
+	}
 	
 	Utils.setPreviewImg(boards);
 	Utils.setPreviewContent(boards);
-	
-	
-	
+	Utils.setPreviewContent(hotBoards);
 	request.setAttribute("boards", boards);
 	request.setAttribute("hotBoards", hotBoards);
-	
-	
-	Utils.setPreviewContent(hotBoards);
 	
 	RequestDispatcher dis = request.getRequestDispatcher("board/list.jsp");
 	dis.forward(request, response);

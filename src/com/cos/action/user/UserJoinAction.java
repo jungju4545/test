@@ -20,6 +20,7 @@ public class UserJoinAction implements Action {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 1 목적 form 태그에 있는 name값을 받아서 DB에 넣고 나서 페이지에 이동
 		// null값 처리하기 , 휴효성 검사
+		System.out.println(request);
 		String username = request.getParameter("username");
 		String rawPassword = request.getParameter("password");
 		String email = request.getParameter("email");

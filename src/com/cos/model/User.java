@@ -12,6 +12,26 @@ public class User {
 	private Timestamp createDate;
 	
 	
+	public User(int id, String userProfile, String username, String password, String email, String address,
+			Timestamp createDate) {
+		super();
+		this.id = id;
+		this.userProfile = userProfile;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.address = address;
+		this.createDate = createDate;
+	}
+
+	public String getUserProfile() {
+		return userProfile;
+	}
+
+	public void setUserProfile(String userProfile) {
+		this.userProfile = userProfile;
+	}
+
 	public User(int id, String username, String password, String email, String address, Timestamp createDate) {
 		super();
 		this.id = id;

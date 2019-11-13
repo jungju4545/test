@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 public class CommentWriteAction implements Action{
 @Override
 public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+	System.out.println("commentAction");
 	int userId  = Integer.parseInt(request.getParameter("userId"));
 	int boardId  = Integer.parseInt(request.getParameter("boardId"));
 	String content = request.getParameter("content");
@@ -29,6 +29,7 @@ public void execute(HttpServletRequest request, HttpServletResponse response) th
 	commentForm.setUserId(userId);
 	commentForm.setBoardId(boardId);
 	commentForm.setContent(content);
+	
 	CommentDao dao = new CommentDao(); 
 	int  result = dao.save(commentForm);
 	
